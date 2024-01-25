@@ -24,16 +24,18 @@ namespace API_Verification.Tests
         [Test, Category("Users_API_Test"), Order(1)]
         public void VerifyGetUserApiUsingPage1()
         {
+            // Arrange
             var resource = "api/users";
             var queryParams = ("page", "1");
 
+            // Act
             var usersPageResponse = ApiSettings
-                                   .Get(resource, baseUrl)
-                                   .AddQueryParameter(queryParams.Item1, queryParams.Item2)
-                                   .Execute<GetUserByPage>();
+                .Get(resource, baseUrl)
+                .AddQueryParameter(queryParams.Item1, queryParams.Item2)
+                .Execute<GetUserByPage>();
 
+            // Assert
             Assert.That(usersPageResponse.IsSuccessful, Is.True);
-
             Assert.Multiple(() =>
             {
                 Assert.That(usersPageResponse.Data!.page, Is.EqualTo(1));
@@ -46,16 +48,18 @@ namespace API_Verification.Tests
         [Test, Category("Users_API_Test"), Order(2)]
         public void VerifyGetUserApiUsingPage2()
         {
+            // Arrange
             var resource = "api/users";
             var queryParams = ("page", "2");
 
+            // Act
             var getUserByPageResponse = ApiSettings
-                                   .Get(resource, baseUrl)
-                                   .AddQueryParameter(queryParams.Item1, queryParams.Item2)
-                                   .Execute<GetUserByPage>();
+                .Get(resource, baseUrl)
+                .AddQueryParameter(queryParams.Item1, queryParams.Item2)
+                .Execute<GetUserByPage>();
 
+            // Assert
             Assert.That(getUserByPageResponse.IsSuccessful, Is.True);
-
             Assert.Multiple(() =>
             {
                 Assert.That(getUserByPageResponse.Data!.page, Is.EqualTo(2));
@@ -68,16 +72,18 @@ namespace API_Verification.Tests
         [Test, Category("Users_API_Test"), Order(3)]
         public void VerifyGetUserByIdApi()
         {
+            // Arrange
             var resource = "api/users/{id}";
             var urlSegments = ("id", "2");
 
+            // Act
             var getUserByIdResponse = ApiSettings
-                                   .Get(resource, baseUrl)
-                                   .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
-                                   .Execute<GetUserById>();
+                .Get(resource, baseUrl)
+                .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
+                .Execute<GetUserById>();
 
+            // Assert
             Assert.That(getUserByIdResponse.IsSuccessful, Is.True);
-
             Assert.Multiple(() =>
             {
                 Assert.That(getUserByIdResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -92,16 +98,18 @@ namespace API_Verification.Tests
         [Test, Category("Users_API_Test"), Order(4)]
         public void VerifyInvalidUserById()
         {
+            // Arrange
             var resource = "api/users/{id}";
             var urlSegments = ("id", "23");
 
+            // Act
             var apiResponse = ApiSettings
-                                   .Get(resource, baseUrl)
-                                   .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
-                                   .Execute();
+                .Get(resource, baseUrl)
+                .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
+                .Execute();
 
+            // Assert
             Assert.That(apiResponse.IsSuccessful, Is.False);
-
             Assert.Multiple(() =>
             {
                 Assert.That(apiResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
