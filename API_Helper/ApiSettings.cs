@@ -10,22 +10,16 @@ namespace API_Helper
         private readonly RestRequest request;
         private readonly string baseUrl;
 
-        private string GetBaseUrl()
+        public ApiSettings(string resource, Method method, string baseUrl)
         {
-            // Implement logic to fetch the base URL dynamically
-            return "";
-        }
-
-        public ApiSettings(string resource, Method method, string? baseUrl = null)
-        {
-            this.baseUrl = baseUrl ?? GetBaseUrl();
-            client = new RestClient(this.baseUrl);
+            this.baseUrl = baseUrl!;
+            client = new RestClient(this.baseUrl!);
             request = new RestRequest(resource, method);
         }
 
         public ApiSettings(string baseUrl)
         {
-            this.baseUrl = baseUrl ?? GetBaseUrl();
+            this.baseUrl = baseUrl;
             client = new RestClient(this.baseUrl);
             request = new RestRequest();
         }
@@ -97,27 +91,27 @@ namespace API_Helper
 
         #region HTTP Methods
 
-        public static ApiSettings Get(string resource, string? baseUrl = null)
+        public static ApiSettings Get(string resource, string baseUrl)
         {
             return new ApiSettings(resource, Method.Get, baseUrl!);
         }
 
-        public static ApiSettings Post(string resource, string? baseUrl = null)
+        public static ApiSettings Post(string resource, string baseUrl)
         {
             return new ApiSettings(resource, Method.Post, baseUrl!);
         }
 
-        public static ApiSettings Put(string resource, string? baseUrl = null)
+        public static ApiSettings Put(string resource, string baseUrl)
         {
             return new ApiSettings(resource, Method.Put, baseUrl!);
         }
 
-        public static ApiSettings Patch(string resource, string? baseUrl = null)
+        public static ApiSettings Patch(string resource, string baseUrl)
         {
             return new ApiSettings(resource, Method.Patch, baseUrl!);
         }
 
-        public static ApiSettings Delete(string resource, string? baseUrl = null)
+        public static ApiSettings Delete(string resource, string baseUrl)
         {
             return new ApiSettings(resource, Method.Delete, baseUrl!);
         }
