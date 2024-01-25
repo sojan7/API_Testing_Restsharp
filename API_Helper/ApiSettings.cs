@@ -14,7 +14,7 @@ namespace API_Helper
             return "";
         }
 
-        public ApiSettings(string resource, Method method, string baseUrl = null)
+        public ApiSettings(string resource, Method method, string? baseUrl = null)
         {
             this.baseUrl = baseUrl ?? GetBaseUrl();
             client = new RestClient(this.baseUrl);
@@ -66,29 +66,29 @@ namespace API_Helper
 
         #region HTTP Methods
 
-        public static ApiSettings Get(string resource, string baseUrl = null)
+        public static ApiSettings Get(string resource, string? baseUrl = null)
         {
-            return new ApiSettings(resource, Method.Get, baseUrl);
+            return new ApiSettings(resource, Method.Get, baseUrl!);
         }
 
-        public static ApiSettings Post(string resource, string baseUrl = null)
+        public static ApiSettings Post(string resource, string? baseUrl = null)
         {
-            return new ApiSettings(resource, Method.Post, baseUrl);
+            return new ApiSettings(resource, Method.Post, baseUrl!);
         }
 
-        public static ApiSettings Put(string resource, string baseUrl = null)
+        public static ApiSettings Put(string resource, string? baseUrl = null)
         {
-            return new ApiSettings(resource, Method.Put, baseUrl);
+            return new ApiSettings(resource, Method.Put, baseUrl!);
         }
 
-        public static ApiSettings Patch(string resource, string baseUrl = null)
+        public static ApiSettings Patch(string resource, string? baseUrl = null)
         {
-            return new ApiSettings(resource, Method.Patch, baseUrl);
+            return new ApiSettings(resource, Method.Patch, baseUrl!);
         }
 
-        public static ApiSettings Delete(string resource, string baseUrl = null)
+        public static ApiSettings Delete(string resource, string? baseUrl = null)
         {
-            return new ApiSettings(resource, Method.Delete, baseUrl);
+            return new ApiSettings(resource, Method.Delete, baseUrl!);
         }
 
         #endregion HTTP Methods
