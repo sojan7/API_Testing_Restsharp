@@ -1,4 +1,6 @@
 ﻿using RestSharp;
+using RestSharp.Authenticators;
+using System.Net;
 
 namespace API_Helper
 {
@@ -43,6 +45,35 @@ namespace API_Helper
         public ApiSettings AddJsonBody(object body)
         {
             request.AddJsonBody(body);
+            return this;
+        }
+
+        public ApiSettings WithBasicAuthentication(HttpBasicAuthenticator httpBasicAuthenticator)
+        {
+            request.Authenticator = httpBasicAuthenticator;
+            return this;
+        }
+
+        public ApiSettings WithCookieAuth(CookieCollection cookieCollection, string neededCookieName)
+        {
+            Cookie? cook = null;
+            foreach (Cookie cookie in cookieCollection)
+            {
+                if (cookie.Name == neededCookieName)
+                {
+                    cook = cookie;
+                }
+            }
+
+            if (cook is null)
+            {
+                request.AddCookie(string.Empty, string.Empty, string.Empty, string.Empty);
+            }
+            else
+            {
+                request.AddCookie(cook.Name, cook.Value, cook.Path, cook.Domain);
+            }
+
             return this;
         }
 

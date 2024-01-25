@@ -31,9 +31,9 @@ namespace API_Verification.Tests
 
             // Act
             var usersPageResponse = ApiSettings
-                .Get(resource, baseUrl)
-                .AddQueryParameter(queryParams.Item1, queryParams.Item2)
-                .Execute<GetUserByPage>();
+                                   .Get(resource, baseUrl)
+                                   .AddQueryParameter(queryParams.Item1, queryParams.Item2)
+                                   .Execute<GetUserByPage>();
 
             // Assert
             Assert.That(usersPageResponse.IsSuccessful, Is.True);
@@ -55,9 +55,9 @@ namespace API_Verification.Tests
 
             // Act
             var getUserByPageResponse = ApiSettings
-                .Get(resource, baseUrl)
-                .AddQueryParameter(queryParams.Item1, queryParams.Item2)
-                .Execute<GetUserByPage>();
+                                       .Get(resource, baseUrl)
+                                       .AddQueryParameter(queryParams.Item1, queryParams.Item2)
+                                       .Execute<GetUserByPage>();
 
             // Assert
             Assert.That(getUserByPageResponse.IsSuccessful, Is.True);
@@ -79,9 +79,9 @@ namespace API_Verification.Tests
 
             // Act
             var getUserByIdResponse = ApiSettings
-                .Get(resource, baseUrl)
-                .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
-                .Execute<GetUserById>();
+                                     .Get(resource, baseUrl)
+                                     .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
+                                     .Execute<GetUserById>();
 
             // Assert
             Assert.That(getUserByIdResponse.IsSuccessful, Is.True);
@@ -105,9 +105,9 @@ namespace API_Verification.Tests
 
             // Act
             var apiResponse = ApiSettings
-                .Get(resource, baseUrl)
-                .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
-                .Execute();
+                             .Get(resource, baseUrl)
+                             .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
+                             .Execute();
 
             // Assert
             Assert.That(apiResponse.IsSuccessful, Is.False);
@@ -131,9 +131,9 @@ namespace API_Verification.Tests
 
             // Act
             var apiResponse = ApiSettings
-                .Post(resource, baseUrl)
-                .AddJsonBody(requestBody)
-                .Execute<UserCreated>();
+                             .Post(resource, baseUrl)
+                             .AddJsonBody(requestBody)
+                             .Execute<UserCreated>();
 
             // Assert
             Assert.That(apiResponse.IsSuccessful, Is.True);
