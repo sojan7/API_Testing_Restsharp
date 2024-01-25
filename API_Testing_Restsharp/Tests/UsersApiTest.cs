@@ -1,5 +1,6 @@
 ﻿using API_Application;
 using API_Helper;
+using API_Verification.Tests.ResponsePayload;
 using API_Verification.Tests.ResponsePayload.GetUserById;
 using API_Verification.Tests.ResponsePayload.GetUserByPage;
 using Newtonsoft.Json.Linq;
@@ -114,6 +115,33 @@ namespace API_Verification.Tests
             {
                 Assert.That(apiResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
                 Assert.That(JObject.Parse(apiResponse.Content!.ToString()).HasValues, Is.False);
+            });
+        }
+
+        [Test, Category("Users_API_Test"), Order(5)]
+        public void VerifyCreateUserApi()
+        {
+            // Arrange
+            var resource = "api/users";
+            var requestBody = new
+            {
+                name = apiTestData["CreateUserApiDetails"]!["name"]!.ToString(),
+                job = apiTestData["CreateUserApiDetails"]!["job"]!.ToString(),
+            };
+
+            // Act
+            var apiResponse = ApiSettings
+                .Post(resource, baseUrl)
+                .AddJsonBody(requestBody)
+                .Execute<UserCreated>();
+
+            // Assert
+            Assert.That(apiResponse.IsSuccessful, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(apiResponse.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+                Assert.That(apiResponse.Data!.job, Is.EqualTo(apiTestData["CreateUserApiDetails"]!["job"]!.ToString()));
+                Assert.That(apiResponse.Data!.name, Is.EqualTo(apiTestData["CreateUserApiDetails"]!["name"]!.ToString()));
             });
         }
     }

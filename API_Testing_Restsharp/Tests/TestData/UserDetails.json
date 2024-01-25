@@ -5,5 +5,9 @@
         "LastName": "Weaver",
         "AvatarUrl": "https://reqres.in/img/faces/2-image.jpg",
         "EmailId": "janet.weaver@reqres.in"
+    },
+    "CreateUserApiDetails": {
+        "name": "Sojan Somarajan",
+        "job": "Test Engineer"
     }
 }
