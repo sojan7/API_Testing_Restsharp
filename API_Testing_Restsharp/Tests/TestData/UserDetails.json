@@ -1,0 +1,9 @@
+{
+    "Id2UserDetails": {
+        "Id": "2",
+        "FirstName": "Janet",
+        "LastName": "Weaver",
+        "AvatarUrl": "https://reqres.in/img/faces/2-image.jpg",
+        "EmailId": "janet.weaver@reqres.in"
+    }
+}
