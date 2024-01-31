@@ -70,16 +70,6 @@ namespace API_Helper
             return this;
         }
 
-        public RestResponse Execute()
-        {
-            return client.Execute(request);
-        }
-
-        public RestResponse<T> Execute<T>()
-        {
-            return client.Execute<T>(request);
-        }
-
         #region HTTP Methods
 
         public RestResponse<T> Get<T>(string resource, string? payload = null)
@@ -91,7 +81,14 @@ namespace API_Helper
                 request.AddJsonBody(payload);
             }
 
-            return ExecuteApi<T>();
+            return Execute<T>();
+        }
+
+        public RestResponse Get(string resource)
+        {
+            request.Method = Method.Get;
+            request.Resource = resource;
+            return Execute();
         }
 
         public RestResponse<T> Post<T>(string resource, string? payload = null)
@@ -103,7 +100,7 @@ namespace API_Helper
                 request.AddJsonBody(payload);
             }
 
-            return ExecuteApi<T>();
+            return Execute<T>();
         }
 
         public RestResponse<T> Put<T>(string resource, string? payload = null)
@@ -115,7 +112,7 @@ namespace API_Helper
                 request.AddJsonBody(payload);
             }
 
-            return ExecuteApi<T>();
+            return Execute<T>();
         }
 
         public RestResponse<T> Patch<T>(string resource, string? payload = null)
@@ -127,7 +124,7 @@ namespace API_Helper
                 request.AddJsonBody(payload);
             }
 
-            return ExecuteApi<T>();
+            return Execute<T>();
         }
 
         public RestResponse<T> Delete<T>(string resource, string? payload = null)
@@ -139,12 +136,17 @@ namespace API_Helper
                 request.AddJsonBody(payload);
             }
 
-            return ExecuteApi<T>();
+            return Execute<T>();
         }
 
-        private RestResponse<T> ExecuteApi<T>()
+        private RestResponse<T> Execute<T>()
         {
             return client.Execute<T>(request);
+        }
+
+        private RestResponse Execute()
+        {
+            return client.Execute(request);
         }
 
         #endregion HTTP Methods
