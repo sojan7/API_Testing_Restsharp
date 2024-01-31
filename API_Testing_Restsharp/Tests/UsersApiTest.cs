@@ -1,11 +1,13 @@
 ﻿using API_Application;
 using API_Helper;
+using API_Verification.Tests.RequestPayload;
 using API_Verification.Tests.ResponsePayload;
 using API_Verification.Tests.ResponsePayload.GetUserById;
 using API_Verification.Tests.ResponsePayload.GetUserByPage;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System.Net;
+using System.Text.Json;
 
 namespace API_Verification.Tests
 {
@@ -30,10 +32,9 @@ namespace API_Verification.Tests
             var queryParams = ("page", "1");
 
             // Act
-            var usersPageResponse = ApiSettings
-                                   .Get(resource, baseUrl)
+            var usersPageResponse = new RestApiClient(baseUrl)
                                    .AddQueryParameter(queryParams.Item1, queryParams.Item2)
-                                   .Execute<GetUserByPage>();
+                                   .Get<GetUserByPage>(resource);
 
             // Assert
             Assert.That(usersPageResponse.IsSuccessful, Is.True);
@@ -54,19 +55,18 @@ namespace API_Verification.Tests
             var queryParams = ("page", "2");
 
             // Act
-            var getUserByPageResponse = ApiSettings
-                                       .Get(resource, baseUrl)
-                                       .AddQueryParameter(queryParams.Item1, queryParams.Item2)
-                                       .Execute<GetUserByPage>();
+            var usersPageResponse = new RestApiClient(baseUrl)
+                                   .AddQueryParameter(queryParams.Item1, queryParams.Item2)
+                                   .Get<GetUserByPage>(resource);
 
             // Assert
-            Assert.That(getUserByPageResponse.IsSuccessful, Is.True);
+            Assert.That(usersPageResponse.IsSuccessful, Is.True);
             Assert.Multiple(() =>
             {
-                Assert.That(getUserByPageResponse.Data!.page, Is.EqualTo(2));
-                Assert.That(getUserByPageResponse.Data.total, Is.EqualTo(12));
-                Assert.That(getUserByPageResponse.Data.total_pages, Is.EqualTo(2));
-                Assert.That(getUserByPageResponse.Data.per_page, Is.EqualTo(6));
+                Assert.That(usersPageResponse.Data!.page, Is.EqualTo(2));
+                Assert.That(usersPageResponse.Data.total, Is.EqualTo(12));
+                Assert.That(usersPageResponse.Data.total_pages, Is.EqualTo(2));
+                Assert.That(usersPageResponse.Data.per_page, Is.EqualTo(6));
             });
         }
 
@@ -78,21 +78,20 @@ namespace API_Verification.Tests
             var urlSegments = ("id", "2");
 
             // Act
-            var getUserByIdResponse = ApiSettings
-                                     .Get(resource, baseUrl)
-                                     .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
-                                     .Execute<GetUserById>();
+            var apiResponse = new RestApiClient(baseUrl)
+                             .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
+                             .Get<GetUserById>(resource);
 
             // Assert
-            Assert.That(getUserByIdResponse.IsSuccessful, Is.True);
             Assert.Multiple(() =>
             {
-                Assert.That(getUserByIdResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                Assert.That(getUserByIdResponse.Data!.data.id, Is.EqualTo(2));
-                Assert.That(getUserByIdResponse.Data.data.email, Is.EqualTo(apiTestData["Id2UserDetails"]!["EmailId"]!.ToString()));
-                Assert.That(getUserByIdResponse.Data.data.avatar, Is.EqualTo(apiTestData["Id2UserDetails"]!["AvatarUrl"]!.ToString()));
-                Assert.That(getUserByIdResponse.Data.data.first_name, Is.EqualTo(apiTestData["Id2UserDetails"]!["FirstName"]!.ToString()));
-                Assert.That(getUserByIdResponse.Data.data.last_name, Is.EqualTo(apiTestData["Id2UserDetails"]!["LastName"]!.ToString()));
+                Assert.That(apiResponse.IsSuccessful, Is.True);
+                Assert.That(apiResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(apiResponse.Data!.data.id, Is.EqualTo(2));
+                Assert.That(apiResponse.Data.data.email, Is.EqualTo(apiTestData["Id2UserDetails"]!["EmailId"]!.ToString()));
+                Assert.That(apiResponse.Data.data.avatar, Is.EqualTo(apiTestData["Id2UserDetails"]!["AvatarUrl"]!.ToString()));
+                Assert.That(apiResponse.Data.data.first_name, Is.EqualTo(apiTestData["Id2UserDetails"]!["FirstName"]!.ToString()));
+                Assert.That(apiResponse.Data.data.last_name, Is.EqualTo(apiTestData["Id2UserDetails"]!["LastName"]!.ToString()));
             });
         }
 
@@ -104,10 +103,9 @@ namespace API_Verification.Tests
             var urlSegments = ("id", "23");
 
             // Act
-            var apiResponse = ApiSettings
-                             .Get(resource, baseUrl)
+            var apiResponse = new RestApiClient(baseUrl)
                              .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
-                             .Execute();
+                             .Get<GetUserById>(resource);
 
             // Assert
             Assert.That(apiResponse.IsSuccessful, Is.False);
@@ -123,22 +121,21 @@ namespace API_Verification.Tests
         {
             // Arrange
             var resource = "api/users";
-            var requestBody = new
+            var userDetails = new CreatUser()
             {
                 name = apiTestData["CreateUserApiDetails"]!["name"]!.ToString(),
                 job = apiTestData["CreateUserApiDetails"]!["job"]!.ToString(),
             };
+            string jsonPayload = JsonSerializer.Serialize(userDetails);
 
             // Act
-            var apiResponse = ApiSettings
-                             .Post(resource, baseUrl)
-                             .AddJsonBody(requestBody)
-                             .Execute<UserCreated>();
+            var apiResponse = new RestApiClient(baseUrl)
+                             .Post<UserCreated>(resource, jsonPayload);
 
             // Assert
-            Assert.That(apiResponse.IsSuccessful, Is.True);
             Assert.Multiple(() =>
             {
+                Assert.That(apiResponse.IsSuccessful, Is.True);
                 Assert.That(apiResponse.StatusCode, Is.EqualTo(HttpStatusCode.Created));
                 Assert.That(apiResponse.Data!.job, Is.EqualTo(apiTestData["CreateUserApiDetails"]!["job"]!.ToString()));
                 Assert.That(apiResponse.Data!.name, Is.EqualTo(apiTestData["CreateUserApiDetails"]!["name"]!.ToString()));
