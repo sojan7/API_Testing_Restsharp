@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using RestSharp;
+﻿using RestSharp;
 using RestSharp.Authenticators;
 using System.Net;
 
@@ -14,6 +13,11 @@ namespace API_Helper
         {
             client = new RestClient(baseUrl);
             request = new RestRequest();
+        }
+
+        public void DisposeClient()
+        {
+            client?.Dispose();
         }
 
         public RestApiClient AddQueryParameter(string name, string value)
