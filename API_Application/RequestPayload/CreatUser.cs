@@ -1,4 +1,4 @@
-﻿namespace API_Verification.Tests.RequestPayload
+﻿namespace API_Application.RequestPayload
 {
     public class CreatUser
     {

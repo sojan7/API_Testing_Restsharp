@@ -1,13 +1,11 @@
 ﻿using API_Application;
 using API_Helper;
-using API_Verification.Tests.RequestPayload;
 using API_Verification.Tests.ResponsePayload;
 using API_Verification.Tests.ResponsePayload.GetUserById;
 using API_Verification.Tests.ResponsePayload.GetUserByPage;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System.Net;
-using System.Text.Json;
 
 namespace API_Verification.Tests
 {
@@ -30,11 +28,11 @@ namespace API_Verification.Tests
             // Arrange
             var resource = "api/users";
             var queryParams = ("page", "1");
-            var restApiClient = new RestApiClient(baseUrl);
+            using var restApiClient = new RestApiClient(baseUrl);
 
             // Act
             var usersPageResponse = restApiClient
-                                   .AddQueryParameter(queryParams.Item1, queryParams.Item2)
+                                   .WithQueryParameter(queryParams.Item1, queryParams.Item2)
                                    .Get<GetUserByPage>(resource, HttpStatusCode.OK);
 
             // Assert
@@ -45,7 +43,6 @@ namespace API_Verification.Tests
                 Assert.That(usersPageResponse.total_pages, Is.EqualTo(2));
                 Assert.That(usersPageResponse.per_page, Is.EqualTo(6));
             });
-            restApiClient.DisposeClient();
         }
 
         [Test, Category("Users_API_Test"), Order(2)]
@@ -54,11 +51,11 @@ namespace API_Verification.Tests
             // Arrange
             var resource = "api/users";
             var queryParams = ("page", "2");
-            var restApiClient = new RestApiClient(baseUrl);
+            using var restApiClient = new RestApiClient(baseUrl);
 
             // Act
             var usersPageResponse = restApiClient
-                                   .AddQueryParameter(queryParams.Item1, queryParams.Item2)
+                                   .WithQueryParameter(queryParams.Item1, queryParams.Item2)
                                    .Get<GetUserByPage>(resource, HttpStatusCode.OK);
 
             // Assert
@@ -69,7 +66,6 @@ namespace API_Verification.Tests
                 Assert.That(usersPageResponse.total_pages, Is.EqualTo(2));
                 Assert.That(usersPageResponse.per_page, Is.EqualTo(6));
             });
-            restApiClient.DisposeClient();
         }
 
         [Test, Category("Users_API_Test"), Order(3)]
@@ -78,11 +74,11 @@ namespace API_Verification.Tests
             // Arrange
             var resource = "api/users/{id}";
             var urlSegments = ("id", "2");
-            var restApiClient = new RestApiClient(baseUrl);
+            using var restApiClient = new RestApiClient(baseUrl);
 
             // Act
             var apiResponse = restApiClient
-                             .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
+                             .WithUrlSegment(urlSegments.Item1, urlSegments.Item2)
                              .Get<GetUserById>(resource, HttpStatusCode.OK);
 
             // Assert
@@ -94,7 +90,6 @@ namespace API_Verification.Tests
                 Assert.That(apiResponse.data.first_name, Is.EqualTo(apiTestData["Id2UserDetails"]!["FirstName"]!.ToString()));
                 Assert.That(apiResponse.data.last_name, Is.EqualTo(apiTestData["Id2UserDetails"]!["LastName"]!.ToString()));
             });
-            restApiClient.DisposeClient();
         }
 
         [Test, Category("Users_API_Test"), Order(4)]
@@ -103,11 +98,11 @@ namespace API_Verification.Tests
             // Arrange
             var resource = "api/users/{id}";
             var urlSegments = ("id", "23");
-            var restApiClient = new RestApiClient(baseUrl);
+            using var restApiClient = new RestApiClient(baseUrl);
 
             // Act
             var apiResponse = restApiClient
-                             .AddUrlSegment(urlSegments.Item1, urlSegments.Item2)
+                             .WithUrlSegment(urlSegments.Item1, urlSegments.Item2)
                              .Get<GetUserById>(resource, HttpStatusCode.NotFound);
 
             // Assert
@@ -116,7 +111,6 @@ namespace API_Verification.Tests
                 Assert.That(apiResponse.data, Is.EqualTo(null));
                 Assert.That(apiResponse.support, Is.EqualTo(null));
             });
-            restApiClient.DisposeClient();
         }
 
         [Test, Category("Users_API_Test"), Order(5)]
@@ -124,13 +118,8 @@ namespace API_Verification.Tests
         {
             // Arrange
             var resource = "api/users";
-            var userDetails = new CreatUser()
-            {
-                name = apiTestData["CreateUserApiDetails"]!["name"]!.ToString(),
-                job = apiTestData["CreateUserApiDetails"]!["job"]!.ToString(),
-            };
-            var jsonPayload = JsonSerializer.Serialize(userDetails);
-            var restApiClient = new RestApiClient(baseUrl);
+            var jsonPayload = ConstructPayload.ConstructCreateUserPayload(apiTestData);
+            using var restApiClient = new RestApiClient(baseUrl);
 
             // Act
             var apiResponse = restApiClient
@@ -142,7 +131,6 @@ namespace API_Verification.Tests
                 Assert.That(apiResponse!.job, Is.EqualTo(apiTestData["CreateUserApiDetails"]!["job"]!.ToString()));
                 Assert.That(apiResponse!.name, Is.EqualTo(apiTestData["CreateUserApiDetails"]!["name"]!.ToString()));
             });
-            restApiClient.DisposeClient();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Net;
 
 namespace API_Helper
 {
-    public class RestApiClient
+    public class RestApiClient : IDisposable
     {
         private readonly RestClient client;
         private readonly RestRequest request;
@@ -15,24 +15,25 @@ namespace API_Helper
             request = new RestRequest();
         }
 
-        public void DisposeClient()
+        public void Dispose()
         {
             client?.Dispose();
+            GC.SuppressFinalize(this);
         }
 
-        public RestApiClient AddQueryParameter(string name, string value)
+        public RestApiClient WithQueryParameter(string name, string value)
         {
             request.AddQueryParameter(name, value);
             return this;
         }
 
-        public RestApiClient AddUrlSegment(string name, string value)
+        public RestApiClient WithUrlSegment(string name, string value)
         {
             request.AddUrlSegment(name, value);
             return this;
         }
 
-        public RestApiClient AddJsonBody(object body)
+        public RestApiClient WithJsonBody(object body)
         {
             request.AddJsonBody(body);
             return this;
@@ -64,7 +65,7 @@ namespace API_Helper
             return this;
         }
 
-        public RestApiClient AddHeader(string name, string value)
+        public RestApiClient WithHeader(string name, string value)
         {
             request.AddHeader(name, value);
             return this;
