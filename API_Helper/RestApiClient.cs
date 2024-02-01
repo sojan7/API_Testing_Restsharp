@@ -84,11 +84,22 @@ namespace API_Helper
             return Execute<T>();
         }
 
-        public RestResponse Get(string resource)
+        public T Get<T>(string resource, HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK, string? payload = null)
         {
             request.Method = Method.Get;
             request.Resource = resource;
-            return Execute();
+            if (payload != null)
+            {
+                request.AddJsonBody(payload);
+            }
+            var response = Execute<T>();
+
+            if (response.StatusCode != expectedHttpStatusCode)
+            {
+                throw new HttpRequestException($"Unexpected status code: {response.StatusCode}");
+            }
+
+            return response.Data!;
         }
 
         public RestResponse<T> Post<T>(string resource, string? payload = null)
@@ -103,6 +114,24 @@ namespace API_Helper
             return Execute<T>();
         }
 
+        public T Post<T>(string resource, HttpStatusCode expectedHttpStatusCode = HttpStatusCode.Created, string? payload = null)
+        {
+            request.Method = Method.Post;
+            request.Resource = resource;
+            if (payload != null)
+            {
+                request.AddJsonBody(payload);
+            }
+            var response = Execute<T>();
+
+            if (response.StatusCode != expectedHttpStatusCode)
+            {
+                throw new HttpRequestException($"Unexpected status code: {response.StatusCode}");
+            }
+
+            return response.Data!;
+        }
+
         public RestResponse<T> Put<T>(string resource, string? payload = null)
         {
             request.Method = Method.Put;
@@ -113,6 +142,24 @@ namespace API_Helper
             }
 
             return Execute<T>();
+        }
+
+        public T Put<T>(string resource, HttpStatusCode expectedHttpStatusCode, string? payload = null)
+        {
+            request.Method = Method.Put;
+            request.Resource = resource;
+            if (payload != null)
+            {
+                request.AddJsonBody(payload);
+            }
+            var response = Execute<T>();
+
+            if (response.StatusCode != expectedHttpStatusCode)
+            {
+                throw new HttpRequestException($"Unexpected status code: {response.StatusCode}");
+            }
+
+            return response.Data!;
         }
 
         public RestResponse<T> Patch<T>(string resource, string? payload = null)
@@ -127,6 +174,24 @@ namespace API_Helper
             return Execute<T>();
         }
 
+        public T Patch<T>(string resource, HttpStatusCode expectedHttpStatusCode, string? payload = null)
+        {
+            request.Method = Method.Patch;
+            request.Resource = resource;
+            if (payload != null)
+            {
+                request.AddJsonBody(payload);
+            }
+            var response = Execute<T>();
+
+            if (response.StatusCode != expectedHttpStatusCode)
+            {
+                throw new HttpRequestException($"Unexpected status code: {response.StatusCode}");
+            }
+
+            return response.Data!;
+        }
+
         public RestResponse<T> Delete<T>(string resource, string? payload = null)
         {
             request.Method = Method.Delete;
@@ -137,6 +202,36 @@ namespace API_Helper
             }
 
             return Execute<T>();
+        }
+
+        public T Delete<T>(string resource, HttpStatusCode expectedHttpStatusCode, string? payload = null)
+        {
+            request.Method = Method.Delete;
+            request.Resource = resource;
+            if (payload != null)
+            {
+                request.AddJsonBody(payload);
+            }
+            var response = Execute<T>();
+
+            if (response.StatusCode != expectedHttpStatusCode)
+            {
+                throw new HttpRequestException($"Unexpected status code: {response.StatusCode}");
+            }
+
+            return response.Data!;
+        }
+
+        public RestResponse Delete(string resource, HttpStatusCode expectedHttpStatusCode)
+        {
+            request.Method = Method.Delete;
+            request.Resource = resource;
+            var response = Execute();
+            if (response.StatusCode != expectedHttpStatusCode)
+            {
+                throw new HttpRequestException($"Unexpected status code: {response.StatusCode}");
+            }
+            return response;
         }
 
         private RestResponse<T> Execute<T>()
