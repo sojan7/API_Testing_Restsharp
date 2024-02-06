@@ -2,7 +2,7 @@
 {
     public class CreatUser
     {
-        public string name { get; set; }
-        public string job { get; set; }
+        public string? Name { get; set; }
+        public string? Job { get; set; }
     }
 }

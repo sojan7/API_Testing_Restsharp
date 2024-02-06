@@ -38,10 +38,10 @@ namespace API_Verification.Tests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(usersPageResponse!.page, Is.EqualTo(1));
-                Assert.That(usersPageResponse.total, Is.EqualTo(12));
-                Assert.That(usersPageResponse.total_pages, Is.EqualTo(2));
-                Assert.That(usersPageResponse.per_page, Is.EqualTo(6));
+                Assert.That(usersPageResponse!.Page, Is.EqualTo(1));
+                Assert.That(usersPageResponse.Total, Is.EqualTo(12));
+                Assert.That(usersPageResponse.Total_Pages, Is.EqualTo(2));
+                Assert.That(usersPageResponse.Per_Page, Is.EqualTo(6));
             });
         }
 
@@ -61,10 +61,10 @@ namespace API_Verification.Tests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(usersPageResponse!.page, Is.EqualTo(2));
-                Assert.That(usersPageResponse.total, Is.EqualTo(12));
-                Assert.That(usersPageResponse.total_pages, Is.EqualTo(2));
-                Assert.That(usersPageResponse.per_page, Is.EqualTo(6));
+                Assert.That(usersPageResponse!.Page, Is.EqualTo(2));
+                Assert.That(usersPageResponse.Total, Is.EqualTo(12));
+                Assert.That(usersPageResponse.Total_Pages, Is.EqualTo(2));
+                Assert.That(usersPageResponse.Per_Page, Is.EqualTo(6));
             });
         }
 
@@ -84,11 +84,11 @@ namespace API_Verification.Tests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(apiResponse!.data.id, Is.EqualTo(2));
-                Assert.That(apiResponse.data.email, Is.EqualTo(apiTestData["Id2UserDetails"]!["EmailId"]!.ToString()));
-                Assert.That(apiResponse.data.avatar, Is.EqualTo(apiTestData["Id2UserDetails"]!["AvatarUrl"]!.ToString()));
-                Assert.That(apiResponse.data.first_name, Is.EqualTo(apiTestData["Id2UserDetails"]!["FirstName"]!.ToString()));
-                Assert.That(apiResponse.data.last_name, Is.EqualTo(apiTestData["Id2UserDetails"]!["LastName"]!.ToString()));
+                Assert.That(apiResponse!.Data!.Id, Is.EqualTo(2));
+                Assert.That(apiResponse.Data.Email, Is.EqualTo(apiTestData["Id2UserDetails"]!["EmailId"]!.ToString()));
+                Assert.That(apiResponse.Data.Avatar, Is.EqualTo(apiTestData["Id2UserDetails"]!["AvatarUrl"]!.ToString()));
+                Assert.That(apiResponse.Data.First_name, Is.EqualTo(apiTestData["Id2UserDetails"]!["FirstName"]!.ToString()));
+                Assert.That(apiResponse.Data.Last_name, Is.EqualTo(apiTestData["Id2UserDetails"]!["LastName"]!.ToString()));
             });
         }
 
@@ -108,8 +108,8 @@ namespace API_Verification.Tests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(apiResponse.data, Is.EqualTo(null));
-                Assert.That(apiResponse.support, Is.EqualTo(null));
+                Assert.That(apiResponse.Data, Is.EqualTo(null));
+                Assert.That(apiResponse.Support, Is.EqualTo(null));
             });
         }
 

@@ -9,8 +9,8 @@ namespace API_Application
         {
             var userDetails = new CreatUser()
             {
-                name = payload.CreateUserApiDetails.name.ToString(),
-                job = payload.CreateUserApiDetails.job.ToString(),
+                Name = payload.CreateUserApiDetails.name.ToString(),
+                Job = payload.CreateUserApiDetails.job.ToString(),
             };
             var jsonPayload = JsonSerializer.Serialize(userDetails);
             return jsonPayload;

@@ -2,26 +2,26 @@
 {
     public class GetUserByPage
     {
-        public int page { get; set; }
-        public int per_page { get; set; }
-        public int total { get; set; }
-        public int total_pages { get; set; }
-        public Datum[] data { get; set; }
-        public Support support { get; set; }
+        public int? Page { get; set; }
+        public int? Per_Page { get; set; }
+        public int? Total { get; set; }
+        public int? Total_Pages { get; set; }
+        public Datum[]? Data { get; set; }
+        public Support? Support { get; set; }
     }
 
     public class Support
     {
-        public string url { get; set; }
-        public string text { get; set; }
+        public string? Url { get; set; }
+        public string? Text { get; set; }
     }
 
     public class Datum
     {
-        public int id { get; set; }
-        public string email { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
-        public string avatar { get; set; }
+        public int? Id { get; set; }
+        public string? Email { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Avatar { get; set; }
     }
 }
